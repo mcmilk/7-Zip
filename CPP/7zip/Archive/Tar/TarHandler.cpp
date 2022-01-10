@@ -107,8 +107,7 @@ STDMETHODIMP CHandler::GetArchiveProperty(PROPID propID, PROPVARIANT *value)
 
     case kpidCharacts:
     {
-      AString s = _encodingCharacts.GetCharactsString();
-      prop = s;
+      prop = _encodingCharacts.GetCharactsString();
       break;
     }
   }
@@ -764,6 +763,9 @@ STDMETHODIMP CHandler::SetProperties(const wchar_t * const *names, const PROPVAR
       _curCodePage = _specifiedCodePage = cp;
     }
     else if (name.IsPrefixedBy_Ascii_NoCase("mt"))
+    {
+    }
+    else if (name.IsPrefixedBy_Ascii_NoCase("memuse"))
     {
     }
     else

@@ -27,11 +27,30 @@ bool ParseSizeString(const wchar_t *s, const PROPVARIANT &prop, UInt64 percentsB
   else if (prop.vt != VT_EMPTY)
     return false;
 
+  bool percentMode = false;
+  {
+    const wchar_t c = *s;
+    if (MyCharLower_Ascii(c) == 'p')
+    {
+      percentMode = true;
+      s++;
+    }
+  }
+
   const wchar_t *end;
-  UInt64 v = ConvertStringToUInt64(s, &end);
+  const UInt64 v = ConvertStringToUInt64(s, &end);
   if (s == end)
     return false;
-  wchar_t c = *end;
+  const wchar_t c = *end;
+
+  if (percentMode)
+  {
+    if (c != 0)
+      return false;
+    res = Calc_From_Val_Percents(percentsBase, v);
+    return true;
+  }
+
   if (c == 0)
   {
     res = v;
@@ -42,7 +61,7 @@ bool ParseSizeString(const wchar_t *s, const PROPVARIANT &prop, UInt64 percentsB
 
   if (c == '%')
   {
-    res = percentsBase / 100 * v;
+    res = Calc_From_Val_Percents(percentsBase, v);
     return true;
   }
 
@@ -56,7 +75,7 @@ bool ParseSizeString(const wchar_t *s, const PROPVARIANT &prop, UInt64 percentsB
     case 't': numBits = 40; break;
     default: return false;
   }
-  UInt64 val2 = v << numBits;
+  const UInt64 val2 = v << numBits;
   if ((val2 >> numBits) != v)
     return false;
   res = val2;
@@ -101,6 +120,15 @@ static void SetMethodProp32(CMethodProps &m, PROPID propID, UInt32 value)
     m.AddProp32(propID, value);
 }
 
+void CMultiMethodProps::SetGlobalLevelTo(COneMethodInfo &oneMethodInfo) const
+{
+  UInt32 level = _level;
+  if (level != (UInt32)(Int32)-1)
+    SetMethodProp32(oneMethodInfo, NCoderPropID::kLevel, (UInt32)level);
+}
+
+#ifndef _7ZIP_ST
+
 static void SetMethodProp32_Replace(CMethodProps &m, PROPID propID, UInt32 value)
 {
   const int i = m.FindProp(propID);
@@ -113,14 +141,6 @@ static void SetMethodProp32_Replace(CMethodProps &m, PROPID propID, UInt32 value
   m.AddProp32(propID, value);
 }
 
-void CMultiMethodProps::SetGlobalLevelTo(COneMethodInfo &oneMethodInfo) const
-{
-  UInt32 level = _level;
-  if (level != (UInt32)(Int32)-1)
-    SetMethodProp32(oneMethodInfo, NCoderPropID::kLevel, (UInt32)level);
-}
-
-#ifndef _7ZIP_ST
 void CMultiMethodProps::SetMethodThreadsTo_IfNotFinded(CMethodProps &oneMethodInfo, UInt32 numThreads)
 {
   SetMethodProp32(oneMethodInfo, NCoderPropID::kNumThreads, numThreads);
@@ -130,7 +150,9 @@ void CMultiMethodProps::SetMethodThreadsTo_Replace(CMethodProps &oneMethodInfo, 
 {
   SetMethodProp32_Replace(oneMethodInfo, NCoderPropID::kNumThreads, numThreads);
 }
-#endif
+
+#endif // _7ZIP_ST
+
 
 void CMultiMethodProps::InitMulti()
 {
