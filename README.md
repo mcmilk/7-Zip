@@ -15,7 +15,7 @@ https://github.com/jinfeihan57/p7zip/tree/7zip_21.02
 ### Zstd versions:
 https://github.com/mcmilk/7-Zip-zstd (21.03, win)
 
-https://github.com/jinfeihan57/p7zip (17.04, win & linux)
+https://github.com/jinfeihan57/p7zip (17.04, macos & linux)
 
 # See Also
 
