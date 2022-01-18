@@ -12,6 +12,10 @@ https://github.com/kornelski/7z (21.06)
 
 https://github.com/jinfeihan57/p7zip/tree/7zip_21.02
 
+https://github.com/rikyoz/7-Zip (21.07)
+
+https://github.com/zone117x/7zip-mirror (21.03)
+
 ### Zstd versions:
 https://github.com/mcmilk/7-Zip-zstd (21.03, win)
 
