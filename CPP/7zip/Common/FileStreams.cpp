@@ -12,7 +12,7 @@
 #include <pwd.h>
 
 // for major()/minor():
-#if defined(__FreeBSD__) || defined(BSD)
+#if defined(__FreeBSD__) || defined(BSD) || defined(__clang__)
 #include <sys/types.h>
 #else
 #include <sys/sysmacros.h>

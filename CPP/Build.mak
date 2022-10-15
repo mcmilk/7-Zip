@@ -77,7 +77,6 @@ CFLAGS = $(CFLAGS) \
   -Wno-nonportable-system-include-path \
   -Wno-c++98-compat-pedantic \
   -Wno-cast-qual \
-  -Wc++11-extensions \
 
 !ENDIF
 
