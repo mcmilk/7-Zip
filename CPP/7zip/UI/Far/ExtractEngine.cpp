@@ -211,7 +211,7 @@ void SetExtractErrorMessage(Int32 opRes, Int32 encrypted, AString &s)
       else if (opRes == NArchive::NExtract::NOperationResult::kIsNotArc)
         s = "Is not archive";
       else if (opRes == NArchive::NExtract::NOperationResult::kHeadersError)
-        s = "kHeaders Error";
+        s = "Headers Error";
       else if (opRes == NArchive::NExtract::NOperationResult::kWrongPassword)
         s = "Wrong Password";
       else
